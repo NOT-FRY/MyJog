@@ -2,6 +2,7 @@ package com.running.myjog;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -46,7 +47,18 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 public void onFinish() {
-                    countdown.setText("done!");
+                    try {
+                        Intent i = new Intent(getApplicationContext(), StopwatchActivity.class);
+                        int co = Integer.parseInt(corsa.getText().toString());
+                        int ca = Integer.parseInt(camminata.getText().toString());
+                        int rip = Integer.parseInt(ripetizioni.getText().toString());
+                        i.putExtra("CORSA", co);
+                        i.putExtra("CAMMINATA", ca);
+                        i.putExtra("RIPETIZIONI", rip);
+                        startActivity(i);
+                    }catch(Exception e){
+
+                    }
                 }
             }.start();
 
