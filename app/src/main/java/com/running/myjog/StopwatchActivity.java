@@ -126,7 +126,6 @@ public class StopwatchActivity extends Activity {
         super.onPause();
         wasRunning = running;
         running = false;
-        testo.setText("PAUSA");
     }
 
     // If the activity is resumed,
@@ -148,6 +147,11 @@ public class StopwatchActivity extends Activity {
     public void onClickStart(View view)
     {
         running = true;
+        if(correndo){
+            testo.setText("CORRI !");
+        }else{
+            testo.setText("CAMMINA !");
+        }
     }
 
     // Stop the stopwatch running
@@ -157,6 +161,7 @@ public class StopwatchActivity extends Activity {
     public void onClickPause(View view)
     {
         running = false;
+        testo.setText("PAUSA");
     }
 
     // Reset the stopwatch when
