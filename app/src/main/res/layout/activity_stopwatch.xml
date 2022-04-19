@@ -49,6 +49,17 @@
     android:textSize="56sp"
     android:textColor="@color/black"/>
 
+    <TextView
+
+        android:id="@+id/testo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textSize="30dp"
+        android:textColor="#ff8000"
+        android:text="CAMMINA !"/>
+
 <ImageButton
     android:id="@+id/start_button"
     android:layout_width="wrap_content"
@@ -66,7 +77,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="8dp"
-    android:onClick="onClickStop"
+    android:onClick="onClickPause"
     android:backgroundTint="#ff8000"
     android:src="@android:drawable/ic_media_pause"
     />
@@ -76,9 +87,10 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="8dp"
-    android:onClick="onClickReset"
+    android:onClick="onClickStop"
     android:text="STOP"
-    android:backgroundTint="#ff8000"/>
+    android:backgroundTint="#ff8000"
+    android:textColor="@color/white"/>
 
 
 </LinearLayout>

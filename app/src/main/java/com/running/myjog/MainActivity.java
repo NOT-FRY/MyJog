@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText corsa,camminata,ripetizioni;
     private TextView tempo,countdown;
+    int co,ca,rip,tempoTotale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +27,39 @@ public class MainActivity extends AppCompatActivity {
         ripetizioni=findViewById(R.id.ripetizioni);
         tempo=findViewById(R.id.tempo);
         countdown=findViewById(R.id.countdown);
+        co=0;
+        ca=0;
+        rip=0;
+        tempoTotale=0;
+        if (savedInstanceState != null) {
+            // if the activity has been
+            // destroyed and recreated.
+            co
+                    = savedInstanceState
+                    .getInt("CORSA");
+            ca
+                    = savedInstanceState
+                    .getInt("CAMMINATA");
+            rip
+                    = savedInstanceState
+                    .getInt("RIPETIZIONI");
+            tempoTotale = savedInstanceState.getInt("TOTALE");
+        }
+        if(co!=0)
+            corsa.setText(""+co);
+        if(ca!=0)
+            camminata.setText(""+ca);
+        if(rip!=0)
+            ripetizioni.setText(""+rip);
+        if(tempoTotale!=0)
+            tempo.setText(tempoTotale+" minuti");
     }
 
     public void start(View v){
         if(checkParameters(corsa)&&checkParameters(camminata)&&checkParameters(ripetizioni)){
-            int tempoTotale = 0;
             try{
-                int co = Integer.parseInt(corsa.getText().toString());
-                int ca = Integer.parseInt(camminata.getText().toString());
+                co = Integer.parseInt(corsa.getText().toString());
+                ca = Integer.parseInt(camminata.getText().toString());
                 tempoTotale = (co+ca)*Integer.parseInt(ripetizioni.getText().toString());
             }catch(Exception e){
 
@@ -49,12 +75,14 @@ public class MainActivity extends AppCompatActivity {
                 public void onFinish() {
                     try {
                         Intent i = new Intent(getApplicationContext(), StopwatchActivity.class);
-                        int co = Integer.parseInt(corsa.getText().toString());
-                        int ca = Integer.parseInt(camminata.getText().toString());
+                        co = Integer.parseInt(corsa.getText().toString());
+                        ca = Integer.parseInt(camminata.getText().toString());
                         int rip = Integer.parseInt(ripetizioni.getText().toString());
+                        tempoTotale = (co+ca)*Integer.parseInt(ripetizioni.getText().toString());
                         i.putExtra("CORSA", co);
                         i.putExtra("CAMMINATA", ca);
                         i.putExtra("RIPETIZIONI", rip);
+                        i.putExtra("TOTALE",tempoTotale);
                         startActivity(i);
                     }catch(Exception e){
 
@@ -73,5 +101,19 @@ public class MainActivity extends AppCompatActivity {
         }
         else
             return false;
+    }
+
+    @Override
+    public void onSaveInstanceState(
+            Bundle savedInstanceState)
+    {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState
+                .putInt("CORSA", co);
+        savedInstanceState
+                .putInt("CAMMINATA", ca);
+        savedInstanceState
+                .putInt("RIPETIZIONI", rip);
+        savedInstanceState.putInt("TOTALE",tempoTotale);
     }
 }

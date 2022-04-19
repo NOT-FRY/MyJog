@@ -2,10 +2,12 @@ package com.running.myjog;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
 import java.util.Locale;
@@ -28,11 +30,22 @@ public class StopwatchActivity extends Activity {
 
     private boolean wasRunning;
 
+    private int corsa,camminata,ripetizioni,tempoTotale;
+
+    private int corsaSecondi,camminataSecondi,tempoTotaleSecondi;
+
+    private int secondiCorsi,secondiCamminati;
+    private TextView testo;
+
+    private boolean correndo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stopwatch);
+        testo= findViewById(R.id.testo);
+
         if (savedInstanceState != null) {
 
             // Get the previous state of the stopwatch
@@ -47,7 +60,24 @@ public class StopwatchActivity extends Activity {
             wasRunning
                     = savedInstanceState
                     .getBoolean("wasRunning");
+            secondiCorsi = savedInstanceState.getInt("SECONDI_CORSI");
+            secondiCamminati = savedInstanceState.getInt("SECONDI_CAMMINATI");
         }
+        running=true;
+        correndo=false;
+        Intent i = getIntent();
+        corsa = i.getIntExtra("CORSA",0);
+        camminata = i.getIntExtra("CAMMINATA",0);
+        ripetizioni = i.getIntExtra("RIPETIZIONI",0 );
+        tempoTotale = i.getIntExtra("TOTALE",0);
+
+        tempoTotaleSecondi = tempoTotale * 60;
+
+        corsaSecondi = corsa*60;
+        camminataSecondi = camminata*60;
+
+        secondiCorsi=0;
+        secondiCamminati=0;
         runTimer();
     }
 
@@ -63,6 +93,8 @@ public class StopwatchActivity extends Activity {
                 .putBoolean("running", running);
         savedInstanceState
                 .putBoolean("wasRunning", wasRunning);
+        savedInstanceState.putInt("SECONDI_CORSI",secondiCorsi);
+        savedInstanceState.putInt("SECONDI_CAMMINATI",secondiCamminati);
     }
 
     // If the activity is paused,
@@ -73,6 +105,7 @@ public class StopwatchActivity extends Activity {
         super.onPause();
         wasRunning = running;
         running = false;
+        testo.setText("PAUSA");
     }
 
     // If the activity is resumed,
@@ -100,7 +133,7 @@ public class StopwatchActivity extends Activity {
     // when the Stop button is clicked.
     // Below method gets called
     // when the Stop button is clicked.
-    public void onClickStop(View view)
+    public void onClickPause(View view)
     {
         running = false;
     }
@@ -109,10 +142,9 @@ public class StopwatchActivity extends Activity {
     // the Reset button is clicked.
     // Below method gets called
     // when the Reset button is clicked.
-    public void onClickReset(View view)
+    public void onClickStop(View view)
     {
-        running = false;
-        seconds = 0;
+        finish();
     }
 
     // Sets the NUmber of seconds on the timer.
@@ -142,30 +174,64 @@ public class StopwatchActivity extends Activity {
 
             public void run()
             {
-                int hours = seconds / 3600;
-                int minutes = (seconds % 3600) / 60;
-                int secs = seconds % 60;
+                if(seconds<=tempoTotaleSecondi){
+                    int hours = seconds / 3600;
+                    int minutes = (seconds % 3600) / 60;
+                    int secs = seconds % 60;
 
-                // Format the seconds into hours, minutes,
-                // and seconds.
-                String time
-                        = String
-                        .format(Locale.getDefault(),
-                                "%d:%02d:%02d", hours,
-                                minutes, secs);
 
-                // Set the text view text.
-                timeView.setText(time);
+                    // Format the seconds into hours, minutes,
+                    // and seconds.
+                    String time
+                            = String
+                            .format(Locale.getDefault(),
+                                    "%d:%02d:%02d", hours,
+                                    minutes, secs);
 
-                // If running is true, increment the
-                // seconds variable.
-                if (running) {
-                    seconds++;
+                    // Set the text view text.
+                    timeView.setText(time);
+
+                    // If running is true, increment the
+                    // seconds variable.
+
+                    if(secondiCamminati>=camminataSecondi){
+                        testo.setText("CORRI !");
+                        correndo=true;
+                        secondiCamminati=0;
+                    }
+
+                    Log.d("DEBUG","camminataSecondi:"+camminataSecondi);
+                    Log.d("DEBUG","corsaSecondi:"+corsaSecondi);
+
+                    if(secondiCorsi>=corsaSecondi){
+                        testo.setText("CAMMINA !");
+                        correndo=false;
+                        secondiCorsi=0;
+                    }
+
+                    if (running) {
+                        seconds++;
+                        if(correndo) {
+                            secondiCorsi++;
+                        }else{
+                            secondiCamminati++;
+                        }
+                    }else{
+                        testo.setText("PAUSA");
+                    }
+
+                    Log.d("DEBUG","secondiCamminati:"+secondiCamminati);
+                    Log.d("DEBUG","secondiCorsi:"+secondiCorsi);
+                    Log.d("DEBUG","secondiTotali:"+tempoTotaleSecondi);
+                    Log.d("DEBUG","seconds:"+seconds);
+
+                    // Post the code again
+                    // with a delay of 1 second.
+                    handler.postDelayed(this, 1000);
                 }
-
-                // Post the code again
-                // with a delay of 1 second.
-                handler.postDelayed(this, 1000);
+                else{
+                    testo.setText("FINITO ! premi stop");
+                }
             }
         });
     }
