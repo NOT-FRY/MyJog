@@ -4,4 +4,4 @@ L'applicazione consente di impostare un tempo di camminata leggera, un tempo di 
 
 Questa app è stata creata con le conoscenze basilari del corso Mobile Programming dell'Università Degli Studi di Salerno
 
-Android [![Download Button](https://img.shields.io/github/v/release/Shabinder/SpotiFlyer?color=7885FF&label=Android-Apk&logo=android&style=for-the-badge)](https://github.com/NOT-FRY/MyJog/releases/download/MyJog/MyJog.apk)
+[![Download Button]https://img.shields.io/badge/android--apk-v1.0-brightgreen](https://github.com/NOT-FRY/MyJog/releases/download/MyJog/MyJog.apk)
