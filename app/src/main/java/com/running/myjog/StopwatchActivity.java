@@ -3,14 +3,18 @@ package com.running.myjog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
 import java.util.Locale;
+
+import android.widget.Button;
 import android.widget.TextView;
 
 public class StopwatchActivity extends Activity {
@@ -30,7 +34,7 @@ public class StopwatchActivity extends Activity {
 
     private boolean wasRunning;
 
-    private int corsa,camminata,ripetizioni,tempoTotale;
+    private int corsa,camminata,tempoTotale;
 
     private int corsaSecondi,camminataSecondi,tempoTotaleSecondi;
 
@@ -41,12 +45,22 @@ public class StopwatchActivity extends Activity {
 
     final Handler handler = new Handler();
 
+    private MediaPlayer mpwhistle, mpding;
+
+    private Button stopButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stopwatch);
         testo= findViewById(R.id.testo);
+        stopButton = findViewById(R.id.stop_button);
+        secondiCorsi=0;
+        secondiCamminati=0;
+
+        running=true;
+        correndo=false;
 
         if (savedInstanceState != null) {
 
@@ -64,13 +78,17 @@ public class StopwatchActivity extends Activity {
                     .getBoolean("wasRunning");
             secondiCorsi = savedInstanceState.getInt("SECONDI_CORSI");
             secondiCamminati = savedInstanceState.getInt("SECONDI_CAMMINATI");
+            correndo = savedInstanceState.getBoolean("CORRENDO");
         }
-        running=true;
-        correndo=false;
+        if(correndo){
+            testo.setText("CORRI !");
+        }else{
+            testo.setText("CAMMINA !");
+        }
+
         Intent i = getIntent();
         corsa = i.getIntExtra("CORSA",0);
         camminata = i.getIntExtra("CAMMINATA",0);
-        ripetizioni = i.getIntExtra("RIPETIZIONI",0 );
         tempoTotale = i.getIntExtra("TOTALE",0);
 
         tempoTotaleSecondi = tempoTotale * 60;
@@ -78,8 +96,8 @@ public class StopwatchActivity extends Activity {
         corsaSecondi = corsa*60;
         camminataSecondi = camminata*60;
 
-        secondiCorsi=0;
-        secondiCamminati=0;
+        mpwhistle = MediaPlayer.create(this,getResources().getIdentifier("whistle","raw",getPackageName()));
+        mpding = MediaPlayer.create(this,getResources().getIdentifier("ding","raw",getPackageName()));
         runTimer();
     }
 
@@ -97,6 +115,7 @@ public class StopwatchActivity extends Activity {
                 .putBoolean("wasRunning", wasRunning);
         savedInstanceState.putInt("SECONDI_CORSI",secondiCorsi);
         savedInstanceState.putInt("SECONDI_CAMMINATI",secondiCamminati);
+        savedInstanceState.putBoolean("CORRENDO",correndo);
     }
 
     // If the activity is paused,
@@ -147,6 +166,8 @@ public class StopwatchActivity extends Activity {
     public void onClickStop(View view)
     {
         handler.removeCallbacksAndMessages(null);
+        mpwhistle.release();
+        mpding.release();
         finish();
     }
 
@@ -195,6 +216,7 @@ public class StopwatchActivity extends Activity {
 
                     if(secondiCamminati>=camminataSecondi){
                         testo.setText("CORRI !");
+                        mpwhistle.start();
                         correndo=true;
                         secondiCamminati=0;
                     }
@@ -204,6 +226,7 @@ public class StopwatchActivity extends Activity {
 
                     if(secondiCorsi>=corsaSecondi){
                         testo.setText("CAMMINA !");
+                        mpding.start();
                         correndo=false;
                         secondiCorsi=0;
                     }
@@ -230,6 +253,7 @@ public class StopwatchActivity extends Activity {
                 }
                 else{
                     testo.setText("FINITO ! premi stop");
+                    stopButton.setVisibility(Button.VISIBLE);
                 }
             }
         };

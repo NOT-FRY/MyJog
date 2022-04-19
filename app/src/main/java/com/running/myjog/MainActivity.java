@@ -16,7 +16,9 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText corsa,camminata,ripetizioni;
     private TextView tempo,countdown;
-    int co,ca,rip,tempoTotale;
+    private int co,ca,rip,tempoTotale;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
