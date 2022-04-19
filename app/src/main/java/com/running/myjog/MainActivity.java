@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         i.putExtra("CAMMINATA", ca);
                         i.putExtra("RIPETIZIONI", rip);
                         i.putExtra("TOTALE",tempoTotale);
+                        countdown.setText("");
                         startActivity(i);
                     }catch(Exception e){
 

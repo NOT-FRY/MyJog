@@ -39,6 +39,8 @@ public class StopwatchActivity extends Activity {
 
     private boolean correndo;
 
+    final Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -144,6 +146,7 @@ public class StopwatchActivity extends Activity {
     // when the Reset button is clicked.
     public void onClickStop(View view)
     {
+        handler.removeCallbacksAndMessages(null);
         finish();
     }
 
@@ -159,17 +162,13 @@ public class StopwatchActivity extends Activity {
                 = (TextView)findViewById(
                 R.id.time_view);
 
-        // Creates a new Handler
-        final Handler handler
-                = new Handler();
-
         // Call the post() method,
         // passing in a new Runnable.
         // The post() method processes
         // code without a delay,
         // so the code in the Runnable
         // will run almost immediately.
-        handler.post(new Runnable() {
+        Runnable myRunnable = new Runnable() {
             @Override
 
             public void run()
@@ -233,6 +232,7 @@ public class StopwatchActivity extends Activity {
                     testo.setText("FINITO ! premi stop");
                 }
             }
-        });
+        };
+        handler.post(myRunnable);
     }
 }
