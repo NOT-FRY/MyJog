@@ -35,10 +35,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="@color/black"
-            ></FrameLayout>
-
-
+            android:background="@color/black"></FrameLayout>
 
 
         <LinearLayout
@@ -60,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="0"
-                android:maxLength="3"/>
+                android:maxLength="3" />
         </LinearLayout>
 
         <View
@@ -88,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="0"
-                android:maxLength="3"/>
+                android:maxLength="3" />
         </LinearLayout>
 
         <View
@@ -116,8 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="0"
-                android:maxLength="3"
-                />
+                android:maxLength="3" />
         </LinearLayout>
 
         <View
@@ -128,7 +124,19 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="37dp"></FrameLayout>
+            android:layout_height="37dp">
+
+        </FrameLayout>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="250dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            >
+
+
+        </Spinner>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -171,8 +179,8 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/roundedbutton"
-                app:srcCompat="@android:drawable/ic_media_play"
-                android:onClick="start"/>
+                android:onClick="start"
+                app:srcCompat="@android:drawable/ic_media_play" />
 
         </LinearLayout>
 
@@ -190,8 +198,8 @@
                 android:id="@+id/countdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="150dp"
-                android:textColor="#ff8000"/>
+                android:textColor="#ff8000"
+                android:textSize="150dp" />
 
         </LinearLayout>
 
