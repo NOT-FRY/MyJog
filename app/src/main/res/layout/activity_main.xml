@@ -59,7 +59,8 @@
                 android:id="@+id/corsa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="0" />
+                android:hint="0"
+                android:maxLength="3"/>
         </LinearLayout>
 
         <View
@@ -86,7 +87,8 @@
                 android:id="@+id/camminata"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="0" />
+                android:hint="0"
+                android:maxLength="3"/>
         </LinearLayout>
 
         <View
@@ -114,6 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="0"
+                android:maxLength="3"
                 />
         </LinearLayout>
 
